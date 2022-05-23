@@ -1,0 +1,19 @@
+﻿/* bootstrapのaccordionをカスタマイズする */
+.accordion--custom .accordion-header {
+    display: flex; /* make flex element */
+    align-items: center; /* aligning child items */
+    column-gap: 1rem; /* adding gap between items in row */
+    padding-left: 1rem;
+}
+
+/* small udjustments */
+.accordion--custom .accordion-header .accordion-button {
+    padding-left: 0;
+    background: none;
+}
+
+.accordion--custom .accordion-header .accordion-button:focus {
+    border-color: none;
+    box-shadow: none;
+}
+
