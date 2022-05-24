@@ -1,5 +1,8 @@
-﻿@{
+﻿@model ToDoManage.Models.Data.Task
+
+@{
     ViewData["Title"] = "Home Page";
+    ToDoManage.Models.Data.Task task = new ToDoManage.Models.Data.Task("aaa", "bbb");
 }
 
 <div class="container">
@@ -31,45 +34,12 @@
 </div>
 <div class="mt-5" style="height:auto">
     <div class="accordion accordion--custom" id="accordionCheckBox">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="accordionHeader_1">
-                <input type="checkbox" class="form-check-input">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordionCollapse_1" aria-expanded="true" aria-controls="accordionCollapse_1">
-                    HomeWork
-                </button>
-            </h2>
-            <div id="accordionCollapse_1" class="accordion-collapse collapse" aria-labelledby="accordionHeader_1" data-bs-parent="#accordionCheckBox">
-                <div class="accordion-body">
-                    TodoHomeWork
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="accordionHeader_2">
-                <input type="checkbox" class="form-check-input">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordionCollapse_2" aria-expanded="false" aria-controls="accordionCollapse_2">
-                    Study
-                </button>
-            </h2>
-            <div id="accordionCollapse_2" class="accordion-collapse collapse" aria-labelledby="accordionHeader_2" data-bs-parent="#accordionCheckBox">
-                <div class="accordion-body">
-                    Todomathstudy
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="accordionHeader_3">
-                <input type="checkbox" class="form-check-input">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordionCollapse_3" aria-expanded="false" aria-controls="accordionCollapse_3">
-                    MakeDinner
-                </button>
-            </h2>
-            <div id="accordionCollapse_3" class="accordion-collapse collapse" aria-labelledby="accordionHeader_3" data-bs-parent="#accordionCheckBox">
-                <div class="accordion-body">
-                    Makedinner
-                </div>
-            </div>
-        </div>
+        @{ for (int i = 0; i < 3; i++)
+            {
+                <accordion-checkbox model=task number=i></accordion-checkbox>
+
+            }
+        }
     </div>
 </div>
 <div class="mt-5">
