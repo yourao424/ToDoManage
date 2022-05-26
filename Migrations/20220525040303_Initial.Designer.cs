@@ -9,7 +9,7 @@ using ToDoManage.Models.Data;
 namespace ToDoManage.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220520044640_Initial")]
+    [Migration("20220525040303_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +20,7 @@ namespace ToDoManage.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("ToDoManage.Models.Data.Task", b =>
+            modelBuilder.Entity("ToDoManage.Models.Data.ToDoTask", b =>
                 {
                     b.Property<int>("taskId")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace ToDoManage.Migrations
 
                     b.HasKey("taskId");
 
-                    b.ToTable("Task");
+                    b.ToTable("ToDoTask");
                 });
 #pragma warning restore 612, 618
         }

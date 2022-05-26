@@ -1,19 +1,22 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ToDoManage.Models.Data
 {
-    public class Task
+    public class ToDoTask
     {
-        public Task(string title, string description)
+        public ToDoTask(string title, string description)
         {
             this.title = title;
             this.description = description;
             this.isDone = false;
         }
 
+        [Key]
         public int taskId { get; set; }
         public string title { get; set; }
         public string description { get; set; }
@@ -27,7 +30,12 @@ namespace ToDoManage.Models.Data
 
         public void Done()
         {
-            this.isDone = true;
+            this.isDone = !this.isDone;
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return (IEnumerator)this;
         }
     }
 }

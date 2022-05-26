@@ -8,7 +8,7 @@ namespace ToDoManage.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Task",
+                name: "ToDoTask",
                 columns: table => new
                 {
                     taskId = table.Column<int>(type: "integer", nullable: false)
@@ -19,14 +19,14 @@ namespace ToDoManage.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Task", x => x.taskId);
+                    table.PrimaryKey("PK_ToDoTask", x => x.taskId);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Task");
+                name: "ToDoTask");
         }
     }
 }

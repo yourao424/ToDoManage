@@ -13,7 +13,7 @@ namespace ToDoManage.Models.TagHelpers
     public class AccordionCheckboxTagHelper : TagHelper
     {
         [HtmlAttributeName("model")]
-        public Task task { get; set; }
+        public ToDoTask task { get; set; }
         [HtmlAttributeName("number")]
         public int number { get; set; }
 

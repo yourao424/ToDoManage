@@ -18,7 +18,7 @@ namespace ToDoManage.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("ToDoManage.Models.Data.Task", b =>
+            modelBuilder.Entity("ToDoManage.Models.Data.ToDoTask", b =>
                 {
                     b.Property<int>("taskId")
                         .ValueGeneratedOnAdd()
@@ -36,7 +36,7 @@ namespace ToDoManage.Migrations
 
                     b.HasKey("taskId");
 
-                    b.ToTable("Task");
+                    b.ToTable("ToDoTask");
                 });
 #pragma warning restore 612, 618
         }
