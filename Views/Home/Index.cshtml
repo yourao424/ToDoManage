@@ -4,6 +4,23 @@
     ViewData["Title"] = "Home Page";
 }
 
+<script>
+    $(function () {
+
+        $('#addTaskBtn').on('click', function () {
+            const formData = $('#addTaskForm').serialize() + `&pageIndex=${@ViewData["pageNumber"]}`;
+
+            $.ajax({
+                url: "/AddTask",
+                data: formData,
+                dataType: "html",
+                type: "POST",
+            }).done(function (res) {
+                $('#partialListView').html(res);
+            })
+        })
+</script>
+
 <div class="container">
     <div class="row my-1">
         <div class="col-2 text-center">
@@ -17,17 +34,19 @@
     </div>
     <div class="row collapse mt-3" id="addTaskAccordion">
         <div class="card card-body">
-            <div class="mb-3">
-                <label for="newTaskTitle" class="form-label">タスク名</label>
-                <input type="text" class="form-control" id="newTaskTitle">
-            </div>
-            <div class="mb-3">
-                <label for="newTaskDescription" class="form-label">タスクの詳細</label>
-                <textarea class="form-control" id="newTaskDescription" rows="3"></textarea>
-            </div>
-            <div class="mb-3">
-                <button id="addTask" type="button" class="btn btn-primary">追加</button>
-            </div>
+            <form id="addTaskForm">
+                <div class="mb-3">
+                    <label for="newTaskTitle" class="form-label">タスク名</label>
+                    <input type="text" class="form-control" name="title" id="newTaskTitle">
+                </div>
+                <div class="mb-3">
+                    <label for="newTaskDescription" class="form-label">タスクの詳細</label>
+                    <textarea class="form-control" name="description" id="newTaskDescription" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <button id="addTaskBtn" type="button" class="btn btn-primary">追加</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
