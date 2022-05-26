@@ -1,0 +1,37 @@
+﻿@model PaginatedList<ToDoTask>
+
+<div class="mt-5">
+    <div class="accordion accordion--custom" id="accordionCheckBox">
+        @{ int index = 0;
+            foreach (ToDoTask task in Model)
+            {
+                index += 1;
+                <accordion-checkbox model=task number=index></accordion-checkbox>
+            }
+        }
+    </div>
+</div>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var active = "";
+}
+<div class="mt-5">
+    <nav aria-label="Search result pages">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @prevDisabled">
+                <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Prev</a>
+            </li>
+            @for (int i = 1; i < Model.TotalPages + 1; i++)
+            {
+                active = Model.PageIndex == i ? "active" : "";
+                <li class="page-item @active">
+                    <a asp-action="Index" asp-route-pageNumber="@i" class="page-link">@i</a>
+                </li>
+            }
+            <li class="page-item @nextDisabled">
+                <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
