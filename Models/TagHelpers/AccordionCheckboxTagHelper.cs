@@ -25,6 +25,7 @@ namespace ToDoManage.Models.TagHelpers
 
             // クラスの追加
             output.AddClass("accordion-item", HtmlEncoder.Default);
+            output.Attributes.Add("data-task-id", task.taskId);
 
             var content = output.Content;
 
@@ -37,6 +38,10 @@ namespace ToDoManage.Models.TagHelpers
             var checkbox = new TagBuilder("input");
             checkbox.AddCssClass("form-check-input");
             checkbox.Attributes.Add("type", "checkbox");
+            if (task.isDone)
+            {
+                checkbox.Attributes.Add("checked", "");
+            }
             header.InnerHtml.AppendHtml(checkbox);
 
             // ボタンの作成
