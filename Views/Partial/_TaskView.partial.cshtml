@@ -9,74 +9,92 @@
     var active = "";
 }
 
-<div class="mt-5">
-    <div class="accordion accordion--custom" id="accordionCheckBox">
-        @{ int index = 0;
-            foreach (ToDoTask task in Model)
-            {
-                index += 1;
-                <accordion-checkbox model=task number=index></accordion-checkbox>
+@{if (Model.Count > 0) {
+    <div class="mt-5">
+        <div class="accordion accordion--custom" id="accordionCheckBox">
+            @{ int index = 0;
+                foreach (ToDoTask task in Model)
+                {
+                    index += 1;
+                    <accordion-checkbox model=task number=index></accordion-checkbox>
+                }
             }
-        }
+        </div>
     </div>
-</div>
-<script>
-    $(function () {
-        $('.pagination-link').on('click', function () {
-            $.ajax({
-                url: "/PaginateChange",
-                data: {
-                    searchText: $('#searchTask').val(),
-                    pageIndex: $(this).data("pagenumber")
-                },
-                dataType: "html",
-                type: "POST",
-            }).done(function (res) {
-                $('#partialListView').html(res);
+    <script>
+        $(function () {
+            $('.pagination-link').on('click', function () {
+                $.ajax({
+                    url: "/PaginateChange",
+                    data: {
+                        searchText: $('#searchTask').val(),
+                        pageIndex: $(this).data("pagenumber")
+                    },
+                    dataType: "html",
+                    type: "POST",
+                }).done(function (res) {
+                    $('#partialListView').html(res);
+                })
             })
         })
-    })
-</script>
-<div class="mt-5">
-    <nav aria-label="Search result pages">
-        <ul class="pagination justify-content-center">
-            <li class="page-item @prevDisabled">
-                <a class="page-link pagination-link" data-pageNumber="@(Model.PageIndex - 1)">Prev</a>
-            </li>
-            @if (Model.PageIndex > 2)
-            {
-                <li class="page-item">
-                    <a class="page-link pagination-link" href="javascript:void(0);" data-pageNumber="1">1</a>
+    </script>
+    <div class="mt-5">
+        <nav aria-label="Search result pages">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @prevDisabled">
+                    <a class="page-link pagination-link" data-pageNumber="@(Model.PageIndex - 1)">Prev</a>
                 </li>
-            }
-            @if (startPage > pageRange)
-            {
-                <li class="page-item disabled">
-                    <a class="page-link">...</a>
+                @if (Model.PageIndex > 2)
+                {
+                    <li class="page-item">
+                        <a class="page-link pagination-link" href="javascript:void(0);" data-pageNumber="1">1</a>
+                    </li>
+                }
+                @if (startPage > pageRange)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">...</a>
+                    </li>
+                }
+                @for (int i = startPage; i <= endPage; i++)
+                {
+                    active = Model.PageIndex == i ? "active" : "";
+                    <li class="page-item @active">
+                        <a data-pageNumber="@i" href="javascript:void(0);" class="page-link pagination-link">@i</a>
+                    </li>
+                }
+                @if ((Model.TotalPages - 1) > endPage)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">...</a>
+                    </li>
+                }
+                @if (Model.TotalPages > (Model.PageIndex + 1))
+                {
+                    <li class="page-item">
+                        <a class="page-link pagination-link" href="javascript:void(0);" data-pageNumber="@Model.TotalPages">@Model.TotalPages</a>
+                    </li>
+                }
+                <li class="page-item @nextDisabled">
+                    <a class="page-link pagination-link" href="javascript:void(0);" data-pageNumber="@(Model.PageIndex + 1)">Next</a>
                 </li>
-            }
-            @for (int i = startPage; i <= endPage; i++)
-            {
-                active = Model.PageIndex == i ? "active" : "";
-                <li class="page-item @active">
-                    <a data-pageNumber="@i" href="javascript:void(0);" class="page-link pagination-link">@i</a>
-                </li>
-            }
-            @if ((Model.TotalPages - 1) > endPage)
-            {
-                <li class="page-item disabled">
-                    <a class="page-link">...</a>
-                </li>
-            }
-            @if (Model.TotalPages > (Model.PageIndex + 1))
-            {
-                <li class="page-item">
-                    <a class="page-link pagination-link" href="javascript:void(0);" data-pageNumber="@Model.TotalPages">@Model.TotalPages</a>
-                </li>
-            }
-            <li class="page-item @nextDisabled">
-                <a class="page-link pagination-link" href="javascript:void(0);" data-pageNumber="@(Model.PageIndex + 1)">Next</a>
-            </li>
-        </ul>
-    </nav>
-</div>
+            </ul>
+        </nav>
+    </div>
+} else {
+    <script>
+        $(function () {
+            $('#keyword').append(`"${$('#searchTask').val()}"`);
+        })
+    </script>
+    <div class="mt-5 text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" fill="currentColor" class="bi bi-emoji-frown" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z" />
+        </svg>
+        <div style="font-size:64px">
+            No Result <span id="keyword"></span>
+        </div>
+    </div>
+}
+}
