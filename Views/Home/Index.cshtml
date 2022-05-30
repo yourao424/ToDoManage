@@ -8,7 +8,8 @@
     $(function () {
 
         $('#addTaskBtn').on('click', function () {
-            const formData = $('#addTaskForm').serialize() + `&pageIndex=${@ViewData["pageNumber"]}`;
+            var pageNumber = $('.page-item.active').find('.page-link').data('pagenumber');
+            const formData = $('#addTaskForm').serialize() + `&pageIndex=${pageNumber}`;
 
             $.ajax({
                 url: "/AddTask",

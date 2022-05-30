@@ -52,8 +52,32 @@ namespace ToDoManage.Controllers
 
 
         public async Task<List<ToDoTask>> GetTasks()
+        [Route("/SearchTask")]
+        [HttpPost]
+        public async Task<IActionResult> SearchTask(string searchText)
         {
-            List<ToDoTask> list = await _context.ToDoTask.OrderBy(x => x.taskId).ToListAsync();
+            return PartialView("~/Views/partial/_TaskView.partial.cshtml", PaginatedList<ToDoTask>.Create(await GetTasks(searchText), 1));
+        }
+
+        [Route("/PaginateChange")]
+        [HttpPost]
+        public async Task<IActionResult> PaginateChange(string searchText, int pageIndex)
+        {
+            return PartialView("~/Views/partial/_TaskView.partial.cshtml", PaginatedList<ToDoTask>.Create(await GetTasks(searchText), pageIndex));
+        }
+
+        public async Task<List<ToDoTask>> GetTasks(string searchText = "")
+        {
+            List<ToDoTask> list = null;
+            if (string.IsNullOrEmpty(searchText))
+            {
+                list = await _context.ToDoTask.AsNoTracking().OrderBy(x => x.taskId).ToListAsync();
+            }
+            else
+            {
+                list = await _context.ToDoTask.AsNoTracking().Where(x => x.title.Contains(searchText)).OrderBy(x => x.taskId).ToListAsync();
+            }
+
             if (list == null)
             {
                 list = new List<ToDoTask>();
