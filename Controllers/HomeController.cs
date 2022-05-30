@@ -50,8 +50,40 @@ namespace ToDoManage.Controllers
             
         }
 
+        [Route("/UpdateTasks")]
+        public async Task<IActionResult> UpdateTasks(int id, string title, string description)
+        {
+            ToDoTask model = _context.ToDoTask.Where(x => x.taskId == id).FirstOrDefault();
 
-        public async Task<List<ToDoTask>> GetTasks()
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            model.Update(title, description);
+            await _context.SaveChanges();
+
+            return PartialView("~/Views/partial/_TaskView.partial.cshtml", await GetTasks());
+        }
+
+        [Route("/DoneTask")]
+        [HttpPost]
+        public async Task<IActionResult> DoneTask(int id)
+        {
+            ToDoTask model = _context.ToDoTask.Where(x => x.taskId == id).FirstOrDefault();
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            model.Done();
+            await _context.SaveChanges();
+
+            return PartialView("~/Views/partial/_TaskView.partial.cshtml", await GetTasks());
+
+        }
+
         [Route("/SearchTask")]
         [HttpPost]
         public async Task<IActionResult> SearchTask(string searchText)

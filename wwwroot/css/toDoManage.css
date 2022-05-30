@@ -13,7 +13,9 @@
 }
 
 .accordion--custom .accordion-header .accordion-button:focus {
-    border-color: none;
     box-shadow: none;
 }
 
+.accordion--custom .accordion-header .form-check-input {
+    margin-top: 0;
+}

@@ -6,6 +6,19 @@
 
 <script>
     $(function () {
+        $(document).on('click', '.form-check-input', function () {
+            var id = $(this).parents('.accordion-item').data('task-id');
+            $.ajax({
+                url: "/DoneTask",
+                data: { id: id },
+                dataType: "html",
+                type: "POST",
+            }).done(function (res) {
+                $('#partialListView').html(res);
+            })
+
+        })
+
 
         $('#addTaskBtn').on('click', function () {
             var pageNumber = $('.page-item.active').find('.page-link').data('pagenumber');
@@ -17,6 +30,8 @@
                 dataType: "html",
                 type: "POST",
             }).done(function (res) {
+                alert();
+                $('#addTaskAccordion').collapse('hide');
                 $('#partialListView').html(res);
             })
         })
@@ -83,4 +98,7 @@
 </div>
 <div id="partialListView">
     <partial name="~/Views/partial/_TaskView.partial.cshtml" model="Model" />
+</div>
+<div class="alert-container position-absolute bottom-0 end-0 p-3">
+    <div id="alert_li"></div>
 </div>
