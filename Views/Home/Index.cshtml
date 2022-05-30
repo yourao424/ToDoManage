@@ -20,6 +20,38 @@
                 $('#partialListView').html(res);
             })
         })
+
+        $('#searchTask').on('input', _.debounce(function () {
+            var searchText = $(this).val();
+
+            $.ajax({
+                url: "/SearchTask",
+                data: { searchText: searchText },
+                dataType: "html",
+                type: "POST",
+            }).done(function (res) {
+                $('#partialListView').html(res);
+            })
+        }, 500))
+
+        function alert() {
+            let alertDom = $("#alert_li");
+            let alertLen = `alert_${$(".alert").length}`;
+            let alertHtml = `<div class="alert alert-success ${alertLen} d-flex align-items-center alert-dismissible fade show" role="alert">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                                <div>
+                                    タスクを追加しました
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>`
+            alertDom[0].insertAdjacentHTML('afterEnd', alertHtml);
+            let alertNode = document.querySelector(`.${alertLen}`);
+            let alert = new bootstrap.Alert(alertNode);
+            setTimeout(() => { alert.close() }, 5000);
+        }
+    })
 </script>
 
 <div class="container">
@@ -28,9 +60,7 @@
             <button id="openAddTaskForm" type="button" class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#addTaskAccordion" aria-expanded="false" aria-controls="addTaskAccordion">タスク追加</button>
         </div>
         <div class="col-10">
-            <form>
-                <input type="text" class="form-control" placeholder="タスクを検索する" aria-label="searchTask">
-            </form>
+            <input type="text" id="searchTask" class="form-control" placeholder="タスクを検索する" aria-label="searchTask">
         </div>
     </div>
     <div class="row collapse mt-3" id="addTaskAccordion">
