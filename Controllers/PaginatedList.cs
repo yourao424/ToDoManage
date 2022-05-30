@@ -17,7 +17,6 @@ namespace ToDoManage.Controllers
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
 
-            this.Clear();
             this.AddRange(items);
         }
 
