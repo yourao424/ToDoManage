@@ -8,9 +8,13 @@
     $(function () {
         $(document).on('click', '.form-check-input', function () {
             var id = $(this).parents('.accordion-item').data('task-id');
+            var pageNumber = $('.page-item.active').find('.page-link').data('pagenumber');
             $.ajax({
                 url: "/DoneTask",
-                data: { id: id },
+                data: {
+                    id: id,
+                    pageIndex: pageNumber
+                },
                 dataType: "html",
                 type: "POST",
             }).done(function (res) {
@@ -31,9 +35,14 @@
 
         $(document).on('click', '.delBtn', function () {
             var id = $(this).parents('.accordion-item').data('task-id');
+            var pageNumber = $('.page-item.active').find('.page-link').data('pagenumber');
+
             $.ajax({
                 url: "/DelTask",
-                data: { id: id },
+                data: {
+                    id: id,
+                    pageIndex: pageNumber
+                },
                 dataType: "html",
                 type: "POST",
             }).done(function (res) {

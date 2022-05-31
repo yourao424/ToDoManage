@@ -68,7 +68,7 @@ namespace ToDoManage.Controllers
 
         [Route("/DoneTask")]
         [HttpPost]
-        public async Task<IActionResult> DoneTask(int id)
+        public async Task<IActionResult> DoneTask(int id, int pageIndex)
         {
             ToDoTask model = _context.ToDoTask.Where(x => x.taskId == id).FirstOrDefault();
 
@@ -80,13 +80,13 @@ namespace ToDoManage.Controllers
             model.Done();
             await _context.SaveChanges();
 
-            return PartialView("~/Views/partial/_TaskView.partial.cshtml", await GetTasks());
+            return PartialView("~/Views/partial/_TaskView.partial.cshtml", PaginatedList<ToDoTask>.Create(await GetTasks(), pageIndex));
 
         }
 
         [Route("/DelTask")]
         [HttpPost]
-        public async Task<IActionResult> DelTask(int id)
+        public async Task<IActionResult> DelTask(int id, int pageIndex)
         {
             ToDoTask model = _context.ToDoTask.Where(x => x.taskId == id).FirstOrDefault();
 
@@ -99,7 +99,7 @@ namespace ToDoManage.Controllers
 
             await _context.SaveChanges();
 
-            return PartialView("~/Views/partial/_TaskView.partial.cshtml", await GetTasks());
+            return PartialView("~/Views/partial/_TaskView.partial.cshtml", PaginatedList<ToDoTask>.Create(await GetTasks(), pageIndex)); 
 
         }
 
