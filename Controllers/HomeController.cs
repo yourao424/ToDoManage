@@ -50,10 +50,10 @@ namespace ToDoManage.Controllers
             
         }
 
-        [Route("/UpdateTasks")]
-        public async Task<IActionResult> UpdateTasks(int id, string title, string description)
+        [Route("/UpdateTask")]
+        public async Task<IActionResult> UpdateTask(int id, string title, string description, int pageIndex)
         {
-            ToDoTask model = _context.ToDoTask.Where(x => x.taskId == id).FirstOrDefault();
+            ToDoTask model = _context.ToDoTask.FirstOrDefault(x => x.taskId == id);
 
             if (model == null)
             {
@@ -63,7 +63,7 @@ namespace ToDoManage.Controllers
             model.Update(title, description);
             await _context.SaveChanges();
 
-            return PartialView("~/Views/partial/_TaskView.partial.cshtml", await GetTasks());
+            return PartialView("~/Views/partial/_TaskView.partial.cshtml", PaginatedList<ToDoTask>.Create(await GetTasks(), pageIndex));
         }
 
         [Route("/DoneTask")]
@@ -78,6 +78,25 @@ namespace ToDoManage.Controllers
             }
 
             model.Done();
+            await _context.SaveChanges();
+
+            return PartialView("~/Views/partial/_TaskView.partial.cshtml", await GetTasks());
+
+        }
+
+        [Route("/DelTask")]
+        [HttpPost]
+        public async Task<IActionResult> DelTask(int id)
+        {
+            ToDoTask model = _context.ToDoTask.Where(x => x.taskId == id).FirstOrDefault();
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            _context.ToDoTask.Remove(model);
+
             await _context.SaveChanges();
 
             return PartialView("~/Views/partial/_TaskView.partial.cshtml", await GetTasks());

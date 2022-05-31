@@ -19,6 +19,28 @@
 
         })
 
+        $(document).on('click', '.editBtn', function () {
+            var id = $(this).parents('.accordion-item').data('task-id');
+            var title = $(this).parents('.accordion-item').find('.accordion-button').text();
+            var description = $(this).parents('.accordion-item').find('.taskDescription').text();
+            $('#editTaskId').val(id);
+            $('#editTaskTitle').val(title);
+            $('#editTaskDescription').val(description);
+            $('#editModal').modal('show');
+        })
+
+        $(document).on('click', '.delBtn', function () {
+            var id = $(this).parents('.accordion-item').data('task-id');
+            $.ajax({
+                url: "/DelTask",
+                data: { id: id },
+                dataType: "html",
+                type: "POST",
+            }).done(function (res) {
+                alert("alert-success", "タスクを削除しました");
+                $('#partialListView').html(res);
+            })
+        })
 
         $('#addTaskBtn').on('click', function () {
             var pageNumber = $('.page-item.active').find('.page-link').data('pagenumber');
@@ -30,9 +52,10 @@
                 dataType: "html",
                 type: "POST",
             }).done(function (res) {
-                alert();
+                alert("alert-success", "タスクを追加しました");
                 $('#addTaskAccordion').collapse('hide');
                 $('#partialListView').html(res);
+                formClear();
             })
         })
 
@@ -49,15 +72,32 @@
             })
         }, 500))
 
-        function alert() {
+        $('#editTaskBtn').on('click', function () {
+            var pageNumber = $('.page-item.active').find('.page-link').data('pagenumber');
+            const formData = $('#editTaskForm').serialize() + `&pageIndex=${pageNumber}`;
+
+            $.ajax({
+                url: "/UpdateTask",
+                data: formData,
+                dataType: "html",
+                type: "POST",
+            }).done(function (res) {
+                alert("alert-success", "タスクを更新しました");
+                $('#partialListView').html(res);
+                $('#editModal').modal('hide');
+                formClear();
+            })
+        })
+
+        function alert(alertType, msg) {
             let alertDom = $("#alert_li");
             let alertLen = `alert_${$(".alert").length}`;
-            let alertHtml = `<div class="alert alert-success ${alertLen} d-flex align-items-center alert-dismissible fade show" role="alert">
+            let alertHtml = `<div class="alert ${alertType} ${alertLen} d-flex align-items-center alert-dismissible fade show" role="alert">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                                   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                                 </svg>
                                 <div>
-                                    タスクを追加しました
+                                    ${msg}
                                 </div>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>`
@@ -65,6 +105,10 @@
             let alertNode = document.querySelector(`.${alertLen}`);
             let alert = new bootstrap.Alert(alertNode);
             setTimeout(() => { alert.close() }, 5000);
+        }
+
+        function formClear() {
+            $('form').find('textarea, :text').val("");
         }
     })
 </script>
@@ -93,6 +137,32 @@
                     <button id="addTaskBtn" type="button" class="btn btn-primary">追加</button>
                 </div>
             </form>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalTitle">タスクの編集</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="editTaskForm">
+                        <input type="hidden" class="form-control" name="id" id="editTaskId">
+                        <div class="mb-3">
+                            <label for="editTaskTitle" class="form-label">タスク名</label>
+                            <input type="text" class="form-control" name="title" id="editTaskTitle">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTaskDescription" class="form-label">タスクの詳細</label>
+                            <textarea class="form-control" name="description" id="editTaskDescription" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                    <button type="button" class="btn btn-primary" id="editTaskBtn">更新する</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

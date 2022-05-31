@@ -66,12 +66,24 @@ namespace ToDoManage.Models.TagHelpers
             
             // コンテンツ表示部分の作成
             var bodyDiv = new TagBuilder("div");
-            bodyDiv.AddCssClass("accordion-body");
+            bodyDiv.AddCssClass("accordion-body taskDescription");
             bodyDiv.InnerHtml.Append($"{task.description}");
             collapseDiv.InnerHtml.AppendHtml(bodyDiv);
 
-            content.AppendHtml(collapseDiv);
+            // 編集削除ボタンの作成
+            var editDiv = new TagBuilder("div");
+            editDiv.AddCssClass("accordion-body d-flex justify-content-end");
+            var editBtn = new TagBuilder("Button");
+            editBtn.AddCssClass("editBtn btn btn-outline-primary");
+            editBtn.InnerHtml.Append("編集");
+            var delBtn = new TagBuilder("Button");
+            delBtn.AddCssClass("delBtn btn btn-outline-danger");
+            delBtn.InnerHtml.Append("削除");
+            editDiv.InnerHtml.AppendHtml(editBtn);
+            editDiv.InnerHtml.AppendHtml(delBtn);
+            collapseDiv.InnerHtml.AppendHtml(editDiv);
 
+            content.AppendHtml(collapseDiv);
         }
     }
 }
